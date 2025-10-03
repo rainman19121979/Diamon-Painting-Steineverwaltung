@@ -207,6 +207,8 @@ sudo systemctl restart diamond-painting
 Wenn du die Anwendung via Git installiert hast:
 
 ```bash
+cd ~/diamond-painting  # oder dein Installationsverzeichnis
+chmod +x update.sh     # Nur beim ersten Mal nötig
 ./update.sh
 ```
 
@@ -217,6 +219,11 @@ Wenn du die Anwendung via Git installiert hast:
 - ✅ Aktualisiert Python Dependencies
 - ✅ Startet Service automatisch neu (wenn als Service installiert)
 - ✅ Behält deine Port-Konfiguration und Daten
+
+**Typische Installationspfade:**
+- `~/diamond-painting` (Home-Verzeichnis)
+- `/opt/diamond-painting` (System-Installation)
+- `/root/diamond-painting` (Root-Installation)
 
 **Manuelles Update ohne Git:**
 1. Backup erstellen: `cp -r data data_backup && cp .env env_backup`
