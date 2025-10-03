@@ -31,7 +31,8 @@ instance/
 .webassets-cache
 
 # User Data
-data/stones.json
+data/
+!data/.gitkeep
 
 # Environment Variables
 .env
