@@ -208,14 +208,19 @@
                 Backup & Wiederherstellung
             </h2>
 
+            <p class="backup-info">
+                Die SQLite-Datenbank wird als JSON-Datei exportiert/importiert.
+                So kannst du deine Daten einfach sichern und auf anderen Systemen wiederherstellen.
+            </p>
+
             <div class="backup-buttons">
                 <button id="export-btn" class="btn btn-secondary">
                     <span class="btn-icon">📥</span>
-                    Backup herunterladen
+                    Backup herunterladen (JSON)
                 </button>
                 <label for="import-file" class="btn btn-secondary">
                     <span class="btn-icon">📤</span>
-                    Backup wiederherstellen
+                    Backup wiederherstellen (JSON)
                     <input type="file" id="import-file" accept=".json" style="display: none;">
                 </label>
             </div>
