@@ -207,12 +207,15 @@ chmod +x update.sh     # Nur beim ersten Mal nötig
 ```
 
 **Das Update-Script:**
-- ✅ Erstellt automatisch Backup von Daten und Konfiguration
+- ✅ Erstellt automatisch Backup von Daten und Konfiguration (in `backup_YYYYMMDD_HHMMSS/`)
+- ✅ Sichert `data/stones.db` (SQLite-Datenbank) oder `data/stones.json` (falls vorhanden)
+- ✅ Sichert `.env` Konfigurationsdatei
 - ✅ Lädt neueste Version von GitHub
 - ✅ Zeigt Änderungen vor dem Update
 - ✅ Aktualisiert Python Dependencies
 - ✅ Startet Service automatisch neu (wenn als Service installiert)
 - ✅ Behält deine Port-Konfiguration und Daten
+- ✅ Ignoriert File-Permission-Änderungen automatisch
 
 **Typische Installationspfade:**
 - `~/diamond-painting` (Home-Verzeichnis)
