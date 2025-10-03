@@ -23,23 +23,32 @@ Eine Web-Anwendung zur Verwaltung deiner Diamond Painting Steinchen-Sammlung mit
 
 ### Automatische Installation (empfohlen)
 
-1. Repository klonen oder herunterladen:
+1. Repository klonen:
 ```bash
-git clone <repository-url>
-cd Diamond_Painting_dings
+git clone https://github.com/rainman19121979/Diamon-Painting-Steineverwaltung.git
+cd Diamon-Painting-Steineverwaltung
 ```
 
-2. Installationsskript ausführbar machen und starten:
+**Optional:** Verzeichnis umbenennen für einfacheren Zugriff:
+```bash
+mv Diamon-Painting-Steineverwaltung diamond-painting
+cd diamond-painting
+```
+
+2. Installationsskript ausführen:
 ```bash
 chmod +x install.sh
-./install.sh
+sudo ./install.sh    # Als root für systemd Service
+# oder
+./install.sh         # Ohne root für manuelle Nutzung
 ```
 
-Das Skript installiert automatisch:
+**Das Skript installiert automatisch:**
 - Python Virtual Environment
 - Alle benötigten Dependencies aus requirements.txt
 - Erstellt die Verzeichnisstruktur
 - Initialisiert die Datenbank (data/stones.json)
+- **Bei Ausführung als root:** Systemd Service für automatischen Start
 
 ### Manuelle Installation
 
@@ -155,7 +164,7 @@ http://[SERVER-IP]:5000
 ## 🗂️ Projektstruktur
 
 ```
-Diamond_Painting_dings/
+diamond-painting/  (oder Diamon-Painting-Steineverwaltung)
 ├── app/
 │   ├── app.py                 # Flask Backend / REST API
 │   ├── dmc_colors_de.py       # 400+ Deutsche DMC Farben
