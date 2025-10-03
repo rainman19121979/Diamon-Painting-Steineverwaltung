@@ -43,10 +43,13 @@ sudo ./install.sh    # Als root für systemd Service
 ./install.sh         # Ohne root für manuelle Nutzung
 ```
 
+**Während der Installation wirst du gefragt:**
+- **Port-Nummer** (Standard: 8080) - Wähle einen freien Port für die Anwendung
+
 **Das Skript installiert automatisch:**
 - Python Virtual Environment
 - Alle benötigten Dependencies aus requirements.txt
-- Erstellt die Verzeichnisstruktur
+- Erstellt die Verzeichnisstruktur und .env Konfigurationsdatei
 - Initialisiert die Datenbank (data/stones.json)
 - **Bei Ausführung als root:** Systemd Service für automatischen Start
 
@@ -85,8 +88,8 @@ python app/app.py
 ```
 
 Die Anwendung läuft dann auf:
-- **Lokal**: http://localhost:5000
-- **Netzwerk**: http://[IP-ADRESSE]:5000
+- **Lokal**: http://localhost:8080 (oder dein gewählter Port)
+- **Netzwerk**: http://[IP-ADRESSE]:8080
 
 ### Steinchen hinzufügen
 
@@ -150,12 +153,27 @@ hostname -I | awk '{print $1}'
 
 2. Öffne im Smartphone-Browser (im selben Netzwerk):
 ```
-http://[SERVER-IP]:5000
+http://[SERVER-IP]:8080
 ```
 
 **Beispiele:**
-- Proxmox LXC: `http://192.168.1.100:5000`
-- Lokales Netzwerk: `http://10.0.0.50:5000`
+- Proxmox LXC: `http://192.168.1.100:8080`
+- Lokales Netzwerk: `http://10.0.0.50:8080`
+
+### Port ändern
+
+Port kann in der `.env` Datei geändert werden:
+```bash
+nano .env
+# FLASK_PORT=8080 ändern zu gewünschtem Port
+```
+
+Danach Service neustarten:
+```bash
+sudo systemctl restart diamond-painting
+# oder
+./start.sh
+```
 
 ### Testen am Desktop
 

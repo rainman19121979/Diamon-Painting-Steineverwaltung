@@ -53,14 +53,18 @@ if ! python -c "import flask" 2>/dev/null; then
     exit 1
 fi
 
+# Load .env file if exists
+if [ -f ".env" ]; then
+    export $(grep -v '^#' .env | xargs)
+fi
+
 # Set Flask environment variables
 export FLASK_APP=app.app
 export FLASK_ENV=development
 export FLASK_DEBUG=1
 
-# Configuration
-HOST="0.0.0.0"
-PORT="5000"
+# Get port from environment or use default
+PORT=${FLASK_PORT:-8080}
 
 # Get container IP address
 CONTAINER_IP=$(hostname -I | awk '{print $1}')
@@ -70,7 +74,7 @@ print_message "${BLUE}Diamond Painting Manager${NC}"
 print_message "${BLUE}========================================${NC}"
 echo ""
 print_message "Starting Flask server..."
-print_message "Host: $HOST"
+print_message "Host: 0.0.0.0"
 print_message "Port: $PORT"
 echo ""
 print_message "${GREEN}Application URLs:${NC}"
@@ -81,7 +85,6 @@ print_warning "Press CTRL+C to stop the server"
 echo ""
 
 # Start Flask development server
-# For production, consider using: gunicorn -w 4 -b 0.0.0.0:5000 app.app:app
 python app/app.py
 
 # This will only execute if the server stops

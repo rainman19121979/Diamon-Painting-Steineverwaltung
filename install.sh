@@ -114,6 +114,28 @@ if [ ! -f "data/stones.json" ]; then
     echo "[]" > data/stones.json
 fi
 
+# Port configuration
+print_message "Port Configuration..."
+read -p "Enter port number (default: 8080): " PORT_INPUT
+PORT=${PORT_INPUT:-8080}
+
+# Validate port number
+if ! [[ "$PORT" =~ ^[0-9]+$ ]] || [ "$PORT" -lt 1024 ] || [ "$PORT" -gt 65535 ]; then
+    print_warning "Invalid port. Using default: 8080"
+    PORT=8080
+fi
+
+print_message "Using port: $PORT"
+
+# Create .env file for port configuration
+cat > .env <<EOF
+# Diamond Painting Organizer Configuration
+FLASK_PORT=$PORT
+FLASK_DEBUG=0
+EOF
+
+chmod 600 .env
+
 # Install systemd service (if root and systemd is available)
 if [ "$EUID" -eq 0 ] && command -v systemctl &> /dev/null; then
     print_message "Installing systemd service..."
@@ -130,7 +152,8 @@ Type=simple
 User=root
 WorkingDirectory=$INSTALL_DIR
 Environment="FLASK_APP=app.app"
-Environment="FLASK_ENV=production"
+Environment="FLASK_PORT=$PORT"
+Environment="FLASK_DEBUG=0"
 ExecStart=$INSTALL_DIR/venv/bin/python $INSTALL_DIR/app/app.py
 Restart=always
 RestartSec=10
@@ -180,7 +203,10 @@ if [ "$EUID" -ne 0 ] || ! command -v systemctl &> /dev/null; then
 fi
 
 print_message "Access the application at:"
-echo "  http://localhost:5000"
-echo "  http://YOUR_LXC_IP:5000"
+echo "  http://localhost:$PORT"
+if command -v hostname &> /dev/null; then
+    SERVER_IP=$(hostname -I | awk '{print $1}')
+    echo "  http://$SERVER_IP:$PORT"
+fi
 echo ""
 print_message "Happy Diamond Painting! ✨"
