@@ -200,11 +200,22 @@ sudo systemctl restart diamond-painting
 
 Wenn du die Anwendung via Git installiert hast:
 
+### Schnell-Anleitung
+
 ```bash
+# 1. Zum Installationsverzeichnis wechseln
 cd ~/diamond-painting  # oder dein Installationsverzeichnis
-chmod +x update.sh     # Nur beim ersten Mal nötig
+
+# 2. Update-Script ausführbar machen (nur beim ersten Mal)
+chmod +x update.sh
+
+# 3. Update durchführen
 ./update.sh
 ```
+
+**Das Script fragt dich:**
+- Ob du das Update durchführen möchtest (nach Anzeige der Änderungen)
+- Alles andere läuft automatisch
 
 **Das Update-Script:**
 - ✅ Erstellt automatisch Backup von Daten und Konfiguration (in `backup_YYYYMMDD_HHMMSS/`)
