@@ -180,12 +180,21 @@ EOF
     fi
 fi
 
-# Restart service if it was running
-if [ "$SERVICE_RUNNING" = true ]; then
+# Restart service if it was running or if service exists
+if [ "$SERVICE_RUNNING" = true ] || (command -v systemctl &> /dev/null && systemctl list-unit-files | grep -q diamond-painting.service); then
     print_message "Starting service..."
     sudo systemctl start diamond-painting
     sleep 2
-    systemctl status diamond-painting --no-pager
+
+    if systemctl is-active --quiet diamond-painting; then
+        print_message "${GREEN}✓ Service started successfully${NC}"
+        systemctl status diamond-painting --no-pager
+    else
+        print_error "Service failed to start!"
+        echo ""
+        print_message "Check logs with: journalctl -u diamond-painting -n 20"
+        exit 1
+    fi
 fi
 
 print_message "${GREEN}========================================${NC}"
