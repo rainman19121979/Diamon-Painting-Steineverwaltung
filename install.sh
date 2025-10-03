@@ -114,15 +114,73 @@ if [ ! -f "data/stones.json" ]; then
     echo "[]" > data/stones.json
 fi
 
+# Install systemd service (if root and systemd is available)
+if [ "$EUID" -eq 0 ] && command -v systemctl &> /dev/null; then
+    print_message "Installing systemd service..."
+
+    # Update service file paths
+    INSTALL_DIR="$SCRIPT_DIR"
+    cat > /etc/systemd/system/diamond-painting.service <<EOF
+[Unit]
+Description=Diamond Painting Organizer
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=$INSTALL_DIR
+Environment="FLASK_APP=app.app"
+Environment="FLASK_ENV=production"
+ExecStart=$INSTALL_DIR/venv/bin/python $INSTALL_DIR/app/app.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    # Reload systemd and enable service
+    systemctl daemon-reload
+    systemctl enable diamond-painting.service
+
+    print_message "Systemd service installed and enabled!"
+    echo ""
+    print_message "Service Management Commands:"
+    echo "  systemctl start diamond-painting    - Start the service"
+    echo "  systemctl stop diamond-painting     - Stop the service"
+    echo "  systemctl restart diamond-painting  - Restart the service"
+    echo "  systemctl status diamond-painting   - Check service status"
+    echo "  journalctl -u diamond-painting -f   - View live logs"
+    echo ""
+
+    # Ask if service should be started now
+    read -p "Start the service now? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        systemctl start diamond-painting
+        sleep 2
+        systemctl status diamond-painting --no-pager
+    fi
+else
+    if [ "$EUID" -ne 0 ]; then
+        print_warning "Not running as root - systemd service not installed"
+        print_message "To install as systemd service, run: sudo ./install.sh"
+    fi
+fi
+
 print_message "${GREEN}========================================${NC}"
 print_message "${GREEN}Installation completed successfully!${NC}"
 print_message "${GREEN}========================================${NC}"
 echo ""
-print_message "Next steps:"
-echo "  1. Start the application: ./start.sh"
-echo "  2. Access the application at: http://YOUR_LXC_IP:5000"
-echo ""
-print_message "To manually activate the virtual environment:"
-echo "  source venv/bin/activate"
+
+if [ "$EUID" -ne 0 ] || ! command -v systemctl &> /dev/null; then
+    print_message "Manual start:"
+    echo "  ./start.sh"
+    echo ""
+fi
+
+print_message "Access the application at:"
+echo "  http://localhost:5000"
+echo "  http://YOUR_LXC_IP:5000"
 echo ""
 print_message "Happy Diamond Painting! ✨"

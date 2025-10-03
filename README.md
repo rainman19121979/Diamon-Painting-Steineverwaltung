@@ -104,6 +104,32 @@ Klicke auf die Spaltenüberschriften zum Sortieren:
 - **Stück** - Numerisch nach Stückzahl sortieren
 - **Ort** - Alphabetisch nach Aufbewahrungsort sortieren
 
+## 🔧 Systemd Service (Automatischer Start)
+
+Bei Installation als **root** wird automatisch ein systemd Service erstellt:
+
+```bash
+# Service verwalten
+systemctl start diamond-painting      # Service starten
+systemctl stop diamond-painting       # Service stoppen
+systemctl restart diamond-painting    # Service neustarten
+systemctl status diamond-painting     # Status anzeigen
+
+# Logs anzeigen
+journalctl -u diamond-painting -f     # Live-Logs
+journalctl -u diamond-painting        # Alle Logs
+
+# Autostart
+systemctl enable diamond-painting     # Autostart aktivieren
+systemctl disable diamond-painting    # Autostart deaktivieren
+```
+
+**Vorteile:**
+- ✅ Automatischer Start beim Systemboot
+- ✅ Automatischer Neustart bei Fehler
+- ✅ Läuft im Hintergrund (kein Terminal nötig)
+- ✅ Integrierte Log-Verwaltung
+
 ## 📱 Mobile Nutzung
 
 ### Am Smartphone testen (WSL2)
@@ -144,8 +170,9 @@ Diamond_Painting_dings/
 ├── data/
 │   └── stones.json            # Datenbank (JSON)
 ├── venv/                      # Virtual Environment
-├── install.sh                 # Installationsskript
-├── start.sh                   # Startskript
+├── install.sh                 # Installationsskript (inkl. systemd)
+├── start.sh                   # Manueller Start
+├── diamond-painting.service   # Systemd Service Template
 ├── requirements.txt           # Python Dependencies
 └── README.md                  # Diese Datei
 ```

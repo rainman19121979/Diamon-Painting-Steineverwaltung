@@ -1,0 +1,16 @@
+[Unit]
+Description=Diamond Painting Organizer
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/diamond-painting
+Environment="FLASK_APP=app.app"
+Environment="FLASK_ENV=production"
+ExecStart=/opt/diamond-painting/venv/bin/python app/app.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
