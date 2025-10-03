@@ -161,6 +161,28 @@
             <div id="search-results" class="search-results hidden"></div>
         </section>
 
+        <!-- Backup/Restore Section -->
+        <section class="card backup-section">
+            <h2 class="section-title">
+                <span class="sparkle">💾</span>
+                Backup & Wiederherstellung
+            </h2>
+
+            <div class="backup-buttons">
+                <button id="export-btn" class="btn btn-secondary">
+                    <span class="btn-icon">📥</span>
+                    Backup herunterladen
+                </button>
+                <label for="import-file" class="btn btn-secondary">
+                    <span class="btn-icon">📤</span>
+                    Backup wiederherstellen
+                    <input type="file" id="import-file" accept=".json" style="display: none;">
+                </label>
+            </div>
+
+            <div id="backup-message" class="message hidden"></div>
+        </section>
+
         <!-- Stones Table -->
         <section class="card table-section">
             <div class="table-header">

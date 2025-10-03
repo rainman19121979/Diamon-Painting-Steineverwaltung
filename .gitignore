@@ -33,6 +33,9 @@ instance/
 # User Data
 data/
 !data/.gitkeep
+*.db
+*.db-journal
+*.json.backup
 
 # Environment Variables
 .env

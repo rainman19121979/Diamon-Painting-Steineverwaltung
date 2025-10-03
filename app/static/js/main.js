@@ -43,7 +43,12 @@ const elements = {
     deleteModal: document.getElementById('delete-modal'),
     confirmDeleteBtn: document.getElementById('confirm-delete-btn'),
     cancelDeleteBtn: document.getElementById('cancel-delete-btn'),
-    modalStoneDetails: document.getElementById('modal-stone-details')
+    modalStoneDetails: document.getElementById('modal-stone-details'),
+
+    // Backup/Restore
+    exportBtn: document.getElementById('export-btn'),
+    importFile: document.getElementById('import-file'),
+    backupMessage: document.getElementById('backup-message')
 };
 
 // ===== Initialize App =====
@@ -89,6 +94,14 @@ function initializeApp() {
             elements.quantity.value = '';
         }
     });
+
+    // Event Listeners - Backup/Restore
+    if (elements.exportBtn) {
+        elements.exportBtn.addEventListener('click', handleExportBackup);
+    }
+    if (elements.importFile) {
+        elements.importFile.addEventListener('change', handleImportBackup);
+    }
 
     // Event Listeners - Search
     elements.searchBtn.addEventListener('click', handleSearch);
@@ -709,6 +722,85 @@ async function handleSort(column) {
     // Sort and display
     const sorted = sortStones(allStones, column, currentSort.direction);
     await displayStones(sorted);
+}
+
+// ===== Backup & Restore Functions =====
+async function handleExportBackup() {
+    try {
+        const response = await fetch(`${API_BASE}/api/backup/export`);
+
+        if (!response.ok) {
+            throw new Error('Backup export failed');
+        }
+
+        // Create blob and download
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `diamond_painting_backup_${new Date().toISOString().slice(0,10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+
+        showBackupMessage('✓ Backup erfolgreich heruntergeladen', 'success');
+    } catch (error) {
+        console.error('Export error:', error);
+        showBackupMessage('✗ Fehler beim Backup-Download', 'error');
+    }
+}
+
+async function handleImportBackup(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Show confirmation dialog
+    if (!confirm(`Achtung: Alle aktuellen Daten werden durch das Backup ersetzt!\n\nBackup: ${file.name}\nFortfahren?`)) {
+        event.target.value = ''; // Reset file input
+        return;
+    }
+
+    try {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await fetch(`${API_BASE}/api/backup/import`, {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.error || 'Import failed');
+        }
+
+        showBackupMessage(`✓ ${result.count} Steinchen erfolgreich wiederhergestellt`, 'success');
+
+        // Reload stones after import
+        setTimeout(() => {
+            loadStones();
+        }, 1500);
+
+    } catch (error) {
+        console.error('Import error:', error);
+        showBackupMessage(`✗ Fehler beim Import: ${error.message}`, 'error');
+    }
+
+    // Reset file input
+    event.target.value = '';
+}
+
+function showBackupMessage(message, type) {
+    const messageEl = elements.backupMessage;
+    messageEl.textContent = message;
+    messageEl.className = `message ${type}`;
+    messageEl.classList.remove('hidden');
+
+    setTimeout(() => {
+        messageEl.classList.add('hidden');
+    }, 5000);
 }
 
 // ===== Export for global access =====
