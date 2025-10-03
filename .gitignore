@@ -30,12 +30,13 @@ env/
 instance/
 .webassets-cache
 
-# User Data
+# User Data & Backups
 data/
 !data/.gitkeep
 *.db
 *.db-journal
 *.json.backup
+backup_*/
 
 # Environment Variables
 .env
