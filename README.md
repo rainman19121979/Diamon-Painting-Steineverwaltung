@@ -53,7 +53,7 @@ sudo ./install.sh    # Als root für systemd Service
 - Python Virtual Environment
 - Alle benötigten Dependencies aus requirements.txt
 - Erstellt die Verzeichnisstruktur und .env Konfigurationsdatei
-- Initialisiert die Datenbank (data/stones.json)
+- Initialisiert die SQLite-Datenbank (data/stones.db)
 - **Bei Ausführung als root:** Systemd Service für automatischen Start
 
 ### Manuelle Installation
@@ -71,8 +71,8 @@ pip install -r requirements.txt
 # Verzeichnisse erstellen
 mkdir -p data app/static/{css,js} app/templates
 
-# Leere Datenbank initialisieren
-echo "[]" > data/stones.json
+# SQLite-Datenbank wird automatisch beim ersten Start erstellt
+# Keine manuelle Initialisierung nötig
 ```
 
 ## 🎯 Verwendung
@@ -149,26 +149,17 @@ systemctl disable diamond-painting    # Autostart deaktivieren
 
 ### Als App auf dem Handy installieren (PWA)
 
-Die Anwendung kann **direkt als App** auf deinem Smartphone installiert werden:
+⚠️ **Wichtig:** PWA-Installation funktioniert nur über HTTPS oder localhost.
+Bei Zugriff über lokale IP-Adresse (z.B. `http://192.168.1.100:8080`) wird die Installation nicht angeboten.
 
-**Android (Chrome/Edge):**
-1. Öffne die Webseite: `http://[SERVER-IP]:8080`
-2. Tippe auf **⋮** (Menü)
-3. Wähle **"Zum Startbildschirm hinzufügen"** oder **"App installieren"**
-4. App erscheint auf dem Homescreen wie eine normale App
+**Für PWA-Installation benötigst du:**
+- HTTPS-Verbindung (z.B. mit nginx/Let's Encrypt)
+- Oder Zugriff über localhost am Desktop
 
-**iPhone/iPad (Safari):**
-1. Öffne die Webseite: `http://[SERVER-IP]:8080`
-2. Tippe auf **Teilen-Symbol** (Quadrat mit Pfeil)
-3. Scrolle nach unten und wähle **"Zum Home-Bildschirm"**
-4. App erscheint auf dem Homescreen
-
-**Vorteile der PWA-Installation:**
-- ✅ Startet wie eine native App (ohne Browser-UI)
-- ✅ Eigenes App-Icon auf dem Homescreen
-- ✅ Funktioniert auch offline (nach erstem Laden)
-- ✅ Keine App-Store Installation nötig
-- ✅ Automatische Updates beim nächsten Start
+**Ohne HTTPS:**
+- Die App funktioniert normal im Browser
+- Bookmark auf dem Homescreen möglich (je nach Browser)
+- Alle Funktionen verfügbar, nur keine App-Installation
 
 ### Zugriff über Netzwerk (ohne Installation)
 
@@ -250,7 +241,7 @@ diamond-painting/  (oder Diamon-Painting-Steineverwaltung)
 │       └── js/
 │           └── main.js        # Frontend-Logik
 ├── data/
-│   └── stones.json            # Datenbank (JSON)
+│   └── stones.db              # SQLite Datenbank
 ├── venv/                      # Virtual Environment
 ├── install.sh                 # Installationsskript (inkl. systemd)
 ├── update.sh                  # Update-Script
@@ -286,12 +277,20 @@ Beispiele:
 
 ## 📝 API Endpunkte
 
+### Steinchen-Verwaltung
 - `GET /api/stones` - Alle Steinchen abrufen
 - `POST /api/stones` - Neues Steinchen hinzufügen
 - `GET /api/stones/<id>` - Einzelnes Steinchen abrufen
 - `PUT /api/stones/<id>` - Steinchen aktualisieren
 - `DELETE /api/stones/<id>` - Steinchen löschen
+- `GET /api/stones/search?q=<query>` - Steinchen suchen (DMC-Nummer oder Farbname)
+
+### DMC Farben
 - `GET /api/dmc/<number>` - DMC Farbinformationen abrufen
+
+### Backup & Restore
+- `GET /api/backup/export` - Datenbank als JSON exportieren (Download)
+- `POST /api/backup/import` - Datenbank aus JSON importieren (Upload)
 
 ## 🔒 Datensicherheit & Backup
 
