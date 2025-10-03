@@ -17,7 +17,7 @@ Eine Web-Anwendung zur Verwaltung deiner Diamond Painting Steinchen-Sammlung mit
 
 - Python 3.8 oder höher
 - pip (Python Package Manager)
-- Linux-basiertes System (getestet auf Proxmox LXC / WSL2)
+- Linux-basiertes System (getestet auf Proxmox LXC, Ubuntu, Debian)
 
 ## 🚀 Installation
 
@@ -132,26 +132,25 @@ systemctl disable diamond-painting    # Autostart deaktivieren
 
 ## 📱 Mobile Nutzung
 
-### Am Smartphone testen (WSL2)
+### Zugriff über Netzwerk
 
-1. Finde deine WSL2 IP-Adresse:
+1. Finde die IP-Adresse deines Containers/Servers:
 ```bash
 hostname -I | awk '{print $1}'
 ```
 
-2. Öffne im Smartphone-Browser:
+2. Öffne im Smartphone-Browser (im selben Netzwerk):
 ```
-http://[WSL2-IP]:5000
+http://[SERVER-IP]:5000
 ```
 
-**Alternativ**: Browser DevTools nutzen (F12 → Device Toolbar)
+**Beispiele:**
+- Proxmox LXC: `http://192.168.1.100:5000`
+- Lokales Netzwerk: `http://10.0.0.50:5000`
 
-### Proxmox LXC Container
+### Testen am Desktop
 
-Die Anwendung läuft direkt auf dem Container und ist im Netzwerk unter der LXC-IP erreichbar:
-```
-http://[LXC-IP]:5000
-```
+**Browser DevTools nutzen** (F12 → Device Toolbar) für mobile Ansicht ohne echtes Gerät
 
 ## 🗂️ Projektstruktur
 
