@@ -10,6 +10,9 @@ Eine Web-Anwendung zur Verwaltung deiner Diamond Painting Steinchen-Sammlung mit
 - **Intelligente Suche** nach DMC-Nummer oder Farbname
 - **Sortierbare Tabelle** nach allen Spalten
 - **Aufbewahrungsort-Tracking** für organisierte Lagerung
+- **SQLite Datenbank** für schnelle Abfragen und Transaktionssicherheit
+- **Backup & Restore** - Exportiere/Importiere deine Daten als JSON
+- **PWA-Installation** - Installierbar als App auf Smartphone
 - **Mobile-optimiert** für Nutzung am Smartphone (Hauptnutzung)
 - **Desktop-kompatibel** für PC-Nutzung
 
@@ -262,7 +265,8 @@ diamond-painting/  (oder Diamon-Painting-Steineverwaltung)
 - **Backend**: Flask 3.0.0 (Python)
 - **Frontend**: Vanilla JavaScript, HTML5, CSS3
 - **PWA**: Progressive Web App (installierbar auf Smartphone)
-- **Datenbank**: JSON-Datei (data/stones.json)
+- **Datenbank**: SQLite (data/stones.db) - schnell & effizient
+- **Backup**: JSON-Export/Import für Portabilität
 - **DMC Farben**: 400+ deutsche Farbnamen mit HEX-Codes
 - **Responsive Design**: Mobile-First Approach
 - **Offline-Fähig**: Service Worker für Offline-Nutzung
@@ -289,11 +293,15 @@ Beispiele:
 - `DELETE /api/stones/<id>` - Steinchen löschen
 - `GET /api/dmc/<number>` - DMC Farbinformationen abrufen
 
-## 🔒 Datensicherheit
+## 🔒 Datensicherheit & Backup
 
-- Benutzerdaten werden lokal in `data/stones.json` gespeichert
+- Benutzerdaten werden lokal in SQLite-Datenbank (`data/stones.db`) gespeichert
+- **Backup-Funktion**: Exportiere deine Daten als JSON-Datei
+- **Restore-Funktion**: Importiere Backup-Dateien jederzeit wieder
+- Automatische Migration von alten JSON-Daten zu SQLite
 - Keine Cloud-Verbindung erforderlich
-- Datei ist in `.gitignore` ausgeschlossen
+- Datenbank ist in `.gitignore` ausgeschlossen
+- Update-Script erstellt automatisch Backups vor Updates
 
 ## Troubleshooting
 
