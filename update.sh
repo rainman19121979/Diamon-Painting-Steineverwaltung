@@ -34,6 +34,9 @@ echo ""
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
 
+# Disable filemode tracking to avoid permission conflicts
+git config core.fileMode false
+
 # Check if this is a git repository
 if [ ! -d ".git" ]; then
     print_error "Not a git repository!"
@@ -76,6 +79,10 @@ if [ "$SERVICE_RUNNING" = true ]; then
     print_message "Stopping service..."
     sudo systemctl stop diamond-painting
 fi
+
+# Reset any local file permission changes
+print_message "Resetting local changes..."
+git reset --hard HEAD
 
 # Fetch latest changes
 print_message "Fetching latest version from GitHub..."
