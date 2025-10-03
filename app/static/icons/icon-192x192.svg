@@ -1,0 +1,6 @@
+<svg width="192" height="192" xmlns="http://www.w3.org/2000/svg">
+  <rect width="192" height="192" fill="#1a1a2e"/>
+  <polygon points="96,40 160,96 96,152 32,96" fill="#8B5CF6"/>
+  <polygon points="96,40 96,96 160,96" fill="#A78BFA" opacity="0.8"/>
+  <text x="96" y="180" font-family="Arial" font-size="20" fill="#fff" text-anchor="middle">💎</text>
+</svg>

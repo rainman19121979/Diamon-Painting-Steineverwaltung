@@ -142,9 +142,32 @@ systemctl disable diamond-painting    # Autostart deaktivieren
 - ✅ Läuft im Hintergrund (kein Terminal nötig)
 - ✅ Integrierte Log-Verwaltung
 
-## 📱 Mobile Nutzung
+## 📱 Mobile Nutzung & App-Installation
 
-### Zugriff über Netzwerk
+### Als App auf dem Handy installieren (PWA)
+
+Die Anwendung kann **direkt als App** auf deinem Smartphone installiert werden:
+
+**Android (Chrome/Edge):**
+1. Öffne die Webseite: `http://[SERVER-IP]:8080`
+2. Tippe auf **⋮** (Menü)
+3. Wähle **"Zum Startbildschirm hinzufügen"** oder **"App installieren"**
+4. App erscheint auf dem Homescreen wie eine normale App
+
+**iPhone/iPad (Safari):**
+1. Öffne die Webseite: `http://[SERVER-IP]:8080`
+2. Tippe auf **Teilen-Symbol** (Quadrat mit Pfeil)
+3. Scrolle nach unten und wähle **"Zum Home-Bildschirm"**
+4. App erscheint auf dem Homescreen
+
+**Vorteile der PWA-Installation:**
+- ✅ Startet wie eine native App (ohne Browser-UI)
+- ✅ Eigenes App-Icon auf dem Homescreen
+- ✅ Funktioniert auch offline (nach erstem Laden)
+- ✅ Keine App-Store Installation nötig
+- ✅ Automatische Updates beim nächsten Start
+
+### Zugriff über Netzwerk (ohne Installation)
 
 1. Finde die IP-Adresse deines Containers/Servers:
 ```bash
@@ -231,9 +254,11 @@ diamond-painting/  (oder Diamon-Painting-Steineverwaltung)
 
 - **Backend**: Flask 3.0.0 (Python)
 - **Frontend**: Vanilla JavaScript, HTML5, CSS3
+- **PWA**: Progressive Web App (installierbar auf Smartphone)
 - **Datenbank**: JSON-Datei (data/stones.json)
 - **DMC Farben**: 400+ deutsche Farbnamen mit HEX-Codes
 - **Responsive Design**: Mobile-First Approach
+- **Offline-Fähig**: Service Worker für Offline-Nutzung
 
 ## 🎨 Unterstützte DMC Farben
 
