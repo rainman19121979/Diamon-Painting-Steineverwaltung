@@ -179,6 +179,29 @@ sudo systemctl restart diamond-painting
 
 **Browser DevTools nutzen** (F12 → Device Toolbar) für mobile Ansicht ohne echtes Gerät
 
+## 🔄 Anwendung aktualisieren
+
+Wenn du die Anwendung via Git installiert hast:
+
+```bash
+./update.sh
+```
+
+**Das Update-Script:**
+- ✅ Erstellt automatisch Backup von Daten und Konfiguration
+- ✅ Lädt neueste Version von GitHub
+- ✅ Zeigt Änderungen vor dem Update
+- ✅ Aktualisiert Python Dependencies
+- ✅ Startet Service automatisch neu (wenn als Service installiert)
+- ✅ Behält deine Port-Konfiguration und Daten
+
+**Manuelles Update ohne Git:**
+1. Backup erstellen: `cp -r data data_backup && cp .env env_backup`
+2. Neue Version von GitHub herunterladen
+3. Dateien ersetzen (außer `data/` und `.env`)
+4. Dependencies aktualisieren: `source venv/bin/activate && pip install -r requirements.txt`
+5. Service neustarten: `sudo systemctl restart diamond-painting`
+
 ## 🗂️ Projektstruktur
 
 ```
@@ -197,6 +220,7 @@ diamond-painting/  (oder Diamon-Painting-Steineverwaltung)
 │   └── stones.json            # Datenbank (JSON)
 ├── venv/                      # Virtual Environment
 ├── install.sh                 # Installationsskript (inkl. systemd)
+├── update.sh                  # Update-Script
 ├── start.sh                   # Manueller Start
 ├── diamond-painting.service   # Systemd Service Template
 ├── requirements.txt           # Python Dependencies
