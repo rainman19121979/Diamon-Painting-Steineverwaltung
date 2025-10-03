@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Diamond Painting Steinchen-Verwaltung - Organisiere deine funkelnden Steinchen">
+    <meta name="theme-color" content="#8B5CF6">
+    <title>✨ Diamond Painting Organizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=1759502000">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="sparkles" id="sparkles"></div>
+
+    <header class="header">
+        <div class="container">
+            <h1 class="title">
+                <span class="gem-icon">💎</span>
+                Diamond Painting Organizer
+                <span class="gem-icon">💎</span>
+            </h1>
+            <p class="subtitle">Verwalte deine funkelnden Steinchen mit Stil</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Add Stone Form -->
+        <section class="card form-section">
+            <h2 class="section-title">
+                <span class="sparkle">✨</span>
+                Steinchen hinzufügen
+            </h2>
+
+            <form id="add-stone-form" class="stone-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dmc-number" class="form-label">
+                            DMC Nummer *
+                            <span class="required">⚡</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="dmc-number"
+                            name="dmc_number"
+                            class="form-input"
+                            placeholder="z.B. 310"
+                            required
+                            pattern="[0-9]+"
+                            title="Nur Zahlen erlaubt"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="color-name" class="form-label">
+                            Farbname
+                            <span class="optional">(optional)</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="color-name"
+                            name="color_name"
+                            class="form-input"
+                            placeholder="z.B. Schwarz"
+                        >
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="quantity" class="form-label">
+                            Menge
+                            <span class="optional">(ODER Stückzahl angeben)</span>
+                        </label>
+                        <div class="quantity-buttons">
+                            <button type="button" class="quantity-btn" data-value="viele">
+                                🌟 Viele
+                            </button>
+                            <button type="button" class="quantity-btn" data-value="wenige">
+                                💫 Wenige
+                            </button>
+                        </div>
+                        <input type="hidden" id="quantity" name="quantity">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pieces" class="form-label">
+                            Stückzahl
+                            <span class="optional">(ODER Menge wählen)</span>
+                        </label>
+                        <input
+                            type="number"
+                            id="pieces"
+                            name="pieces"
+                            class="form-input"
+                            placeholder="z.B. 250"
+                            min="1"
+                        >
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="location" class="form-label">
+                            Aufbewahrungsort
+                            <span class="optional">(optional)</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            class="form-input"
+                            placeholder="z.B. Box 1, Regal A"
+                        >
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <span class="btn-icon">✨</span>
+                    Steinchen hinzufügen
+                    <span class="btn-shine"></span>
+                </button>
+            </form>
+
+            <div id="form-message" class="message hidden"></div>
+        </section>
+
+        <!-- Search Section -->
+        <section class="card search-section">
+            <h2 class="section-title">
+                <span class="sparkle">🔍</span>
+                Steinchen suchen
+            </h2>
+
+            <div class="search-box">
+                <input
+                    type="text"
+                    id="search-input"
+                    class="form-input search-input"
+                    placeholder="DMC Nummer oder Farbname eingeben..."
+                >
+                <button id="search-btn" class="btn btn-secondary">
+                    <span class="btn-icon">🔍</span>
+                    Suchen
+                </button>
+                <button id="clear-search-btn" class="btn btn-ghost">
+                    Zurücksetzen
+                </button>
+            </div>
+
+            <div id="search-message" class="message hidden"></div>
+            <div id="search-results" class="search-results hidden"></div>
+        </section>
+
+        <!-- Stones Table -->
+        <section class="card table-section">
+            <div class="table-header">
+                <h2 class="section-title">
+                    <span class="sparkle">💎</span>
+                    Meine Steinchen-Sammlung
+                </h2>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="stones-table" id="stones-table">
+                    <thead>
+                        <tr>
+                            <th>Farbe</th>
+                            <th class="sortable" data-sort="dmc_number" onclick="handleSort('dmc_number')" style="cursor: pointer;">DMC Nr. <span class="sort-icon">⇅</span></th>
+                            <th class="sortable" data-sort="color_name" onclick="handleSort('color_name')" style="cursor: pointer;">Farbname <span class="sort-icon">⇅</span></th>
+                            <th class="sortable" data-sort="quantity" onclick="handleSort('quantity')" style="cursor: pointer;">Menge <span class="sort-icon">⇅</span></th>
+                            <th class="sortable" data-sort="pieces" onclick="handleSort('pieces')" style="cursor: pointer;">Stück <span class="sort-icon">⇅</span></th>
+                            <th class="sortable" data-sort="location" onclick="handleSort('location')" style="cursor: pointer;">Ort <span class="sort-icon">⇅</span></th>
+                            <th>Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stones-tbody">
+                        <tr class="loading-row">
+                            <td colspan="7">
+                                <div class="loading-spinner"></div>
+                                <p>Lade Steinchen...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="empty-state" class="empty-state hidden">
+                <div class="empty-icon">💎</div>
+                <p class="empty-text">Noch keine Steinchen vorhanden</p>
+                <p class="empty-subtext">Füge dein erstes Steinchen hinzu!</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>✨ Made with sparkles and love for Diamond Painting enthusiasts ✨</p>
+        </div>
+    </footer>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 class="modal-title">
+                <span class="sparkle">⚠️</span>
+                Steinchen löschen?
+            </h3>
+            <p class="modal-text">Möchtest du dieses Steinchen wirklich löschen?</p>
+            <div class="modal-details" id="modal-stone-details"></div>
+            <div class="modal-actions">
+                <button id="confirm-delete-btn" class="btn btn-danger">
+                    Ja, löschen
+                </button>
+                <button id="cancel-delete-btn" class="btn btn-ghost">
+                    Abbrechen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}?v=1759502000"></script>
+</body>
+</html>
