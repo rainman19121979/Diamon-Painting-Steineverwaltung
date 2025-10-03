@@ -64,9 +64,12 @@ BACKUP_DIR="backup_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # Backup data and configuration
-if [ -d "data" ]; then
-    cp -r data "$BACKUP_DIR/"
-    print_message "Backed up data directory"
+if [ -f "data/stones.db" ]; then
+    cp data/stones.db "$BACKUP_DIR/"
+    print_message "Backed up SQLite database (stones.db)"
+elif [ -f "data/stones.json" ]; then
+    cp data/stones.json "$BACKUP_DIR/"
+    print_message "Backed up JSON database (stones.json)"
 fi
 
 if [ -f ".env" ]; then
